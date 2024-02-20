@@ -1,0 +1,51 @@
+import random
+
+def ask_multiple_choice(question):
+    print(question['question'])
+    for idx, choice in enumerate(question['choices'], 1):
+        print(f"{idx}. {choice}")
+
+    user_answer = input("Enter the number of your answer: ")
+    return question['choices'][int(user_answer) - 1] == question['answer']
+
+def ask_fill_in_the_blank(question):
+    user_answer = input(question['question'] + " ")
+    return user_answer.lower() == question['answer'].lower()
+
+def play_quiz(questions):
+    score = 0
+
+    for question in questions:
+        if question['type'] == 'multiple-choice':
+            is_correct = ask_multiple_choice(question)
+        elif question['type'] == 'fill-in-the-blank':
+            is_correct = ask_fill_in_the_blank(question)
+
+        if is_correct:
+            print("Correct!\n")
+            score += 1
+        else:
+            print(f"Incorrect. The correct answer is: {question['answer']}\n")
+
+    print(f"Quiz completed. Your score is {score}/{len(questions)}.")
+
+if __name__ == "__main__":
+    quiz_questions = [
+        {
+            'type': 'multiple-choice',
+            'question': 'What is the capital of France?',
+            'choices': ['Paris', 'Berlin', 'Madrid', 'Rome'],
+            'answer': 'Paris'
+        },
+        {
+            'type': 'fill-in-the-blank',
+            'question': 'The currency of Japan is ____.',
+            'answer': 'Yen'
+        },
+        # Add more questions as needed
+    ]
+
+    random.shuffle(quiz_questions)  # Shuffle the order of questions
+
+    print("Welcome to the Quiz Game!")
+    play_quiz(quiz_questions)
